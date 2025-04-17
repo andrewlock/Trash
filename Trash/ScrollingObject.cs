@@ -240,14 +240,14 @@ namespace Trash
 
             //starts a new sprite batch, sets the scissor rectangle property 
             Rectangle defaultScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-            bool defaultUseScissorTest = spriteBatch.GraphicsDevice.RenderState.ScissorTestEnable;
+            bool defaultUseScissorTest = spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable;
 
             //when setting the scissor area we have to account for the scaling of the screen
             Rectangle scissorArea = new Rectangle((int)(spriteBatch.GraphicsDevice.Viewport.X + scrollArea.X * ResizedSpriteBatch.scale + ResizedSpriteBatch.offset.X), (int)(spriteBatch.GraphicsDevice.Viewport.Y + scrollArea.Y * ResizedSpriteBatch.scale + ResizedSpriteBatch.offset.Y),
                 (int)(scrollArea.Width * ResizedSpriteBatch.scale), (int)(scrollArea.Height * ResizedSpriteBatch.scale));
 
             //Want to do the scissor rectangle with regard to the current viewport
-            spriteBatch.GraphicsDevice.RenderState.ScissorTestEnable = true;
+            spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable = true;
             spriteBatch.GraphicsDevice.ScissorRectangle = scissorArea;
 
             Vector2 position = currentPosition;
@@ -286,7 +286,7 @@ namespace Trash
 
             //reset the previous scissorRectangle parameters
             spriteBatch.GraphicsDevice.ScissorRectangle = defaultScissorRectangle;
-            spriteBatch.GraphicsDevice.RenderState.ScissorTestEnable = defaultUseScissorTest;
+            spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable = defaultUseScissorTest;
 
         }
 
