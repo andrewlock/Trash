@@ -15,14 +15,6 @@
     <None Remove="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icon.ico">
-      <LogicalName>Icon.ico</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Icon.bmp">
-      <LogicalName>Icon.bmp</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
