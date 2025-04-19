@@ -12,7 +12,6 @@ namespace Trash
     /// </summary>
     public class GameBoard : DrawableGameComponent
     {
-
         static int boardHeight = PlayingAreaConstants.Height / BasicPill.height;
         static int boardWidth = PlayingAreaConstants.Width / BasicPill.width;
 
@@ -165,7 +164,7 @@ namespace Trash
                 if (!alreadyUsed)
                 {
                     completedLines.Add(horizLine);
-                    Sound.Play(SoundEntry.BreakPills);
+                    Sound.Play(SoundEffectType.BreakPills);
                     //linesCompletedThisMove++;
                     completedLinesThisMove.Add(horizLine);
                     //lineColorsThisMove.Add(horizLine[0].color);
@@ -190,7 +189,7 @@ namespace Trash
                 if (!alreadyUsed)
                 {
                     completedLines.Add(vertLine);
-                    Sound.Play(SoundEntry.BreakPills);
+                    Sound.Play(SoundEffectType.BreakPills);
                     //linesCompletedThisMove++;
                     //lineColorsThisMove.Add(vertLine[0].color);
                     completedLinesThisMove.Add(vertLine);
@@ -218,7 +217,9 @@ namespace Trash
                     if (WillContactPill(pillPart, new Point(0, trashSpeed)) || !WillStayInBounds(pillPart, new Point(0, trashSpeed)))
                     {
                         pillPart.droppingState = PillDroppingState.Contact;
-                        Sound.Play(SoundEntry.LandPills);
+                        Sound.Play(Random.Shared.Next(2) == 0
+                            ? SoundEffectType.LandPills1
+                            : SoundEffectType.LandPills2);
                         Point boardPos = ScreenToBoard(pillPart.position);
                         pillParts[boardPos.X, boardPos.Y] = pillPart;
                         changedAnyStates = true;
@@ -328,7 +329,7 @@ namespace Trash
         /// </summary>
         public void CreateTrash()
         {
-            Sound.Play(SoundEntry.TrashDrop);
+            Sound.Play(SoundEffectType.TrashDrop);
             //keep note of pills we've added 
             List<BasicPill> trashCreated = new List<BasicPill>();
             foreach (Color color in trashColors)
@@ -768,7 +769,7 @@ namespace Trash
                     currentDoublePill.Rotate(MathHelper.PiOver2);
                     if (WillContactPill(currentDoublePill, Point.Zero) || !WillStayInBounds(currentDoublePill, Point.Zero))
                     {
-                        //Have the possibility of shifting the pill to the left óne if available
+                        //Have the possibility of shifting the pill to the left ï¿½ne if available
                         if (WillContactPill(currentDoublePill, new Point(-BasicPill.width, 0)) || !WillStayInBounds(currentDoublePill, new Point(-BasicPill.width, 0)))
                             currentDoublePill.Rotate(-MathHelper.PiOver2);
                         else
@@ -782,7 +783,7 @@ namespace Trash
                     currentDoublePill.Rotate(-MathHelper.PiOver2);
                     if (WillContactPill(currentDoublePill, Point.Zero) || !WillStayInBounds(currentDoublePill, Point.Zero))
                     {
-                        //Have the possibility of shifting the pill to the left óne if available
+                        //Have the possibility of shifting the pill to the left ï¿½ne if available
                         if (WillContactPill(currentDoublePill, new Point(-BasicPill.width, 0)) || !WillStayInBounds(currentDoublePill, new Point(-BasicPill.width, 0)))
                             currentDoublePill.Rotate(MathHelper.PiOver2);
                         else
@@ -800,7 +801,9 @@ namespace Trash
                     {
                         //pill has made contact with other pills
                         dropState = PillDroppingState.Contact;
-                        Sound.Play(SoundEntry.LandPills);
+                        Sound.Play(Random.Shared.Next(2) == 0
+                            ? SoundEffectType.LandPills1
+                            : SoundEffectType.LandPills2);
 
                         Point leftBoardPos = ScreenToBoard((int)currentDoublePill.leftPillPart.position.X, (int)currentDoublePill.leftPillPart.position.Y);
                         pillParts[leftBoardPos.X, leftBoardPos.Y] = currentDoublePill.leftPillPart;

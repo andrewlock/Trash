@@ -20,7 +20,7 @@ namespace Trash
         /// <param name="game">The parent game</param>
         /// <param name="backgroundImage">The background image to display</param>
         /// <param name="backgroundMusic">The background music to play</param>
-        public TitleScreen(Game game, string backgroundImage, SoundEntry backgroundMusic)
+        public TitleScreen(Game game, string backgroundImage, MusicType backgroundMusic)
             : base(game, backgroundMusic)
         {
             titleTextureString = backgroundImage;

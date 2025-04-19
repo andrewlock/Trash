@@ -13,10 +13,10 @@ namespace Trash
     public class Screen : DrawableGameComponent
     {
 
-        private SoundEntry backgroundMusic;
+        private MusicType backgroundMusic;
         private Texture2D backgroundTexture;
         private ResizedSpriteBatch batch;
-        private Cue cue;
+        private SoundEffectInstance cue;
         private bool isMusicPlaying;
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Trash
         /// 
         /// <param name="backgroundMusic">The background music to play when this is 
         /// visible</param>
-        public Screen(Game game, SoundEntry backgroundMusic)
+        public Screen(Game game, MusicType backgroundMusic)
             : base(game)
         {
             this.backgroundMusic = backgroundMusic;

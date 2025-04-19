@@ -27,7 +27,7 @@ namespace Trash
         /// <param name="backgroundImage">The background image to display 
         /// Note that null is passed to the parent so this is not displayed</param>
         /// <param name="backgroundMusic">The background music to play</param>
-        public LevelChangeScreen(Game game, string backgroundImage, SoundEntry backgroundMusic)
+        public LevelChangeScreen(Game game, string backgroundImage, MusicType backgroundMusic)
             : base(game, backgroundMusic)
         {
             this.backgroundImage = backgroundImage;

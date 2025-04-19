@@ -24,7 +24,7 @@ namespace Trash
         /// <param name="backgroundImage">The background image to display 
         /// Note that null is passed to the parent so this is not displayed</param>
         /// <param name="backgroundMusic">The background music to play</param>
-        public SettingsScreen(Game game, string backgroundImage, SoundEntry backgroundMusic)
+        public SettingsScreen(Game game, string backgroundImage, MusicType backgroundMusic)
             : base(game, backgroundMusic)
         {
             this.backgroundImage = backgroundImage;
@@ -318,41 +318,41 @@ namespace Trash
                         case CursorLocation.OnSolo:
                             if (helper.IsEnterPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 SetPlayerGameType(player);
                             }
                             else if (helper.IsDownPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 board.cursorLocation = CursorLocation.OnLink;
                             }
                             break;
                         case CursorLocation.OnLink:
                             if (helper.IsEnterPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 SetPlayerGameType(player);
                             }
                             else if (helper.IsUpPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 board.cursorLocation = CursorLocation.OnSolo;
                             }
                             else if (helper.IsDownPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 board.cursorLocation = CursorLocation.OnExit;
                             }
                             break;
                         case CursorLocation.OnExit:
                             if (helper.IsEnterPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 player.isExiting = true; ;
                             }
                             else if (helper.IsUpPressed())
                             {
-                                Sound.Play(SoundEntry.Navigate);
+                                Sound.Play(SoundEffectType.Navigate);
                                 board.cursorLocation = CursorLocation.OnLink;
                             }
                             break;
@@ -368,39 +368,39 @@ namespace Trash
                             case CursorLocation.OnLevel:
                                 if (helper.IsEnterPressed() || helper.IsRightPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.currentLevel++;
                                 }
                                 if (helper.IsLeftPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.currentLevel--;
                                 }
                                 if (helper.IsDownPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.cursorLocation = CursorLocation.OnDifficulty;
                                 }
                                 break;
                             case CursorLocation.OnDifficulty:
                                 if (helper.IsEnterPressed() || helper.IsRightPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.currentDifficulty++;
                                 }
                                 if (helper.IsLeftPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.currentDifficulty--;
                                 }
                                 if (helper.IsDownPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.cursorLocation = CursorLocation.OnStart;
                                 }
                                 if (helper.IsUpPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.cursorLocation = CursorLocation.OnLevel;
                                 }
                                 break;
@@ -409,13 +409,13 @@ namespace Trash
                                 {
                                     if (helper.IsEnterPressed())
                                     {
-                                        Sound.Play(SoundEntry.Navigate);
+                                        Sound.Play(SoundEffectType.Navigate);
                                         StartGame(player);
                                     }
                                 }
                                 if (helper.IsUpPressed())
                                 {
-                                    Sound.Play(SoundEntry.Navigate);
+                                    Sound.Play(SoundEffectType.Navigate);
                                     board.cursorLocation = CursorLocation.OnDifficulty;
                                 }
                                 break;

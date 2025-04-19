@@ -1,53 +1,78 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using NetEscapades.EnumGenerators;
 
 namespace Trash
 {
     /// <summary>
     /// An enum for all of the Trash sounds
     /// </summary>
-    public enum SoundEntry
+    [EnumExtensions]
+    public enum MusicType
     {
         /// <summary>
         /// Silence
         /// </summary>
+        [Description("")]
         NoSound,
         /// <summary>
         /// Title Screen music
         /// </summary>
+        [Description("")]
         MusicTitle,
         /// <summary>
         /// In game music
         /// </summary>
+        [Description(@"Audio\wav\one big rush")]
         MusicGame,
         /// <summary>
         /// GameOver
         /// </summary>
+        [Description("")]
         MusicGameOver,
-        /// <summary>
-        /// Board cleared
-        /// </summary>
-        MusicBoardCleared,
+    }
+
+    /// <summary>
+    /// An enum for all of the Trash sounds
+    /// </summary>
+    [EnumExtensions]
+    public enum SoundEffectType
+    {
         /// <summary>
         /// Start game
         /// </summary>
+        [Description(@"Audio\wav\start_3")]
         StartGame,
         /// <summary>
         /// Move cursor
         /// </summary>
+        [Description(@"Audio\wav\navigate_1")]
         Navigate,
         /// <summary>
         /// Break Pills
         /// </summary>
+        [Description(@"Audio\wav\navigate_1")]
         BreakPills,
         /// <summary>
         /// Bonus sound for large clear
         /// </summary>
+        [Description(@"Audio\wav\clear_illegal")]
         TrashDrop,
         /// <summary>
         /// Pills landing after breaking
         /// </summary>
-        LandPills,
+        [Description(@"Audio\wav\drop1")]
+        LandPills1,
+        [Description(@"Audio\wav\drop2")]
+        LandPills2,
+        /// <summary>
+        /// Board cleared
+        /// </summary>
+        [Description(@"Audio\wav\clear_bonus")]
+        MusicBoardCleared
     }
 
     /// <summary>
@@ -55,65 +80,47 @@ namespace Trash
     /// </summary>
     public static class Sound
     {
-        /// <summary>
-        /// The cue names in xact corresponding to the SoundEntry enums
-        /// </summary>
-        private static string[] cueNames = new string[]
-        {
-            "Silence", //No sound
-            "Silence", //Title Screen
-            "Music_Game", //In-Game Music
-            "Silence", //Game Over
-            "Clear_Board", //Clear Board
-            "Game_Start", //start Game
-            "Navigate", //Cursor Move
-            "Pill_Break", //Pills Breaking
-            "Trash", //Trash Drop sound
-            "Pill_Land", //Pill impact sound (after fall)
-
-        };
-
-        private static AudioEngine engine;
-        private static SoundBank soundbank;
-        private static WaveBank wavebank;
+        private static SoundEffect[] _musicBacking;
+        private static SoundEffectInstance[] _music;
+        private static SoundEffect[] _effects;
 
         /// <summary>
         /// Starts up the sound code, if the standard wave bank can't be used, load the 
         /// LowWaveBank (which does not include music)
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(ContentManager content)
         {
-            engine = new AudioEngine(@"Content\Audio\Trash.xgs");
-            try
+            _effects = new SoundEffect[SoundEffectTypeExtensions.Length];
+            for (int i = 0; i < _effects.Length; i++)
             {
-                wavebank = new WaveBank(engine, @"Content\Audio\Wave Bank.xwb");
-            }
-            catch (Exception)
-            {
-                wavebank = new WaveBank(engine, @"Content\Audio\LowWaveBank.xwb");
-            }
-            try
-            {
-                soundbank = new SoundBank(engine, @"Content\audio\Sound Bank.xsb");
-            }
-            catch (Exception)
-            {
-                soundbank = new SoundBank(engine, @"Content\audio\LowSoundBank.xsb");
+                var soundEffect = ((SoundEffectType)i).ToStringFast(useMetadataAttributes: true);
+                _effects[i] = content.Load<SoundEffect>(soundEffect);
             }
 
+            _musicBacking = new SoundEffect[MusicTypeExtensions.Length];
+            _music = new SoundEffectInstance[MusicTypeExtensions.Length];
+            for (int i = 0; i < _music.Length; i++)
+            {
+                var musicType = (MusicType)i;
+                var music = musicType.ToStringFast(useMetadataAttributes: true);
+                if (string.IsNullOrEmpty(music))
+                {
+                    _musicBacking[i] = null;
+                    _music[i] = null;
+                    continue;
+                }
+
+                var effect = content.Load<SoundEffect>(music);
+                _musicBacking[i] = effect;
+                var instance = effect.CreateInstance();
+                instance.IsLooped = true;
+                _music[i] = instance;
+            }
         }
 
-        /// <summary>
-        /// Plays a sound
-        /// </summary>
-        /// <param name="cueName">Which sound to play</param>
-        /// <returns>XACT cue to be used if you want to stop this particular looped 
-        /// sound. Can be ignored for one shot sounds</returns>
-        public static Cue Play(string cueName)
+        public static void Play(SoundEffectType soundEffect)
         {
-            Cue returnValue = soundbank.GetCue(cueName);
-            returnValue.Play();
-            return returnValue;
+            _effects[(int)soundEffect].Play();
         }
 
         /// <summary>
@@ -122,9 +129,16 @@ namespace Trash
         /// <param name="sound">Which sound to play</param>
         /// <returns>XACT cue to be used if you want to stop this particular looped 
         /// sound. Can be ignored for one shot sounds</returns>
-        public static Cue Play(SoundEntry sound)
+        public static SoundEffectInstance Play(MusicType sound)
         {
-            return Play(cueNames[(int)sound]);
+            var music = _music[(int)sound];
+            if (music is null)
+            {
+                return null;
+            }
+
+            music.Play();
+            return music;
         }
 
         /// <summary>
@@ -132,21 +146,39 @@ namespace Trash
         /// </summary>
         public static void Shutdown()
         {
-            if (soundbank != null) soundbank.Dispose();
-            if (wavebank != null) wavebank.Dispose();
-            if (engine != null) engine.Dispose();
+            foreach (var soundEffect in _effects)
+            {
+                soundEffect.Dispose();
+            }
+
+            foreach (var soundEffectInstance in _music)
+            {
+                if (soundEffectInstance is not null)
+                {
+                    soundEffectInstance.Stop(immediate: true);
+                    soundEffectInstance.Dispose();
+                }
+            }
+
+            foreach (var backing in _musicBacking)
+            {
+                if (backing is not null)
+                {
+                    backing.Dispose();
+                }
+            }
         }
 
         /// <summary>
         /// Stops a previously playing cue
         /// </summary>
-        /// <param name="cue">The cue to stop that you got returned from Play(sound)
+        /// <param name="sound">The cue to stop that you got returned from Play(sound)
         /// </param>
-        public static void Stop(Cue cue)
+        public static void Stop(SoundEffectInstance sound)
         {
-            if (cue != null)
+            if (sound is not null)
             {
-                cue.Stop(AudioStopOptions.Immediate);
+                sound.Stop(immediate: true);
             }
         }
     }

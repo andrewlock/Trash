@@ -47,7 +47,7 @@ namespace Trash
 
         //the default viewport for the screen, as oposed to the viewports used by each player
         public static Viewport DefaultViewport { get; private set; }
-        Cue musicCue;
+        SoundEffectInstance musicCue;
 
         /// <summary>
         /// List of all the PlayerDetails objects in the game, representing discrete players
@@ -111,7 +111,7 @@ namespace Trash
         public void EnterMainGame()
         {
             //start game music
-            musicCue = Sound.Play(SoundEntry.MusicGame);
+            musicCue = Sound.Play(MusicType.MusicGame);
             //disable title screen
             titleScreen.Enabled = false;
             titleScreen.Visible = false;
@@ -217,42 +217,42 @@ namespace Trash
         /// </summary>
         protected override void Initialize()
         {
-            creditsScreen = new CreditsScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            creditsScreen = new CreditsScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(creditsScreen);
             creditsScreen.Visible = false;
             creditsScreen.Enabled = false;
 
-            settingsScreen = new SettingsScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            settingsScreen = new SettingsScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(settingsScreen);
             settingsScreen.Visible = false;
             settingsScreen.Enabled = false;
 
-            mainGameScreen = new GameScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            mainGameScreen = new GameScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(mainGameScreen);
             mainGameScreen.Visible = false;
             mainGameScreen.Enabled = false;
 
-            levelChangeScreen = new LevelChangeScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            levelChangeScreen = new LevelChangeScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(levelChangeScreen);
             levelChangeScreen.Visible = false;
             levelChangeScreen.Enabled = false;
 
-            gameOverScreen = new GameOverScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            gameOverScreen = new GameOverScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(gameOverScreen);
             gameOverScreen.Visible = false;
             gameOverScreen.Enabled = false;
 
-            enterHighScoreScreen = new EnterHighScoreScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            enterHighScoreScreen = new EnterHighScoreScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(enterHighScoreScreen);
             enterHighScoreScreen.Visible = false;
             enterHighScoreScreen.Enabled = false;
 
-            playerScoreScreen = new PlayerScoreScreen(this, @"Textures/play_screen", SoundEntry.NoSound);
+            playerScoreScreen = new PlayerScoreScreen(this, @"Textures/play_screen", MusicType.NoSound);
             Components.Add(playerScoreScreen);
             gameOverScreen.Visible = false;
             gameOverScreen.Enabled = false;
 
-            titleScreen = new TitleScreen(this, @"Textures/title_screen", SoundEntry.MusicTitle);
+            titleScreen = new TitleScreen(this, @"Textures/title_screen", MusicType.MusicTitle);
             Components.Add(titleScreen);
             titleScreen.Visible = true;
             titleScreen.Enabled = true;
@@ -268,7 +268,7 @@ namespace Trash
             Components.Add(helper);
             Players.Add(new PlayerDetails(helper, new GameBoard(this, mainGameScreen), new BoardSetupDetails()));
 
-            Sound.Initialize();
+            Sound.Initialize(Content);
             base.Initialize();
 
             LoadHighScores();
@@ -293,7 +293,7 @@ namespace Trash
 
                 }
             }
-            Sound.Play(SoundEntry.MusicBoardCleared);
+            Sound.Play(SoundEffectType.MusicBoardCleared);
             levelChangeScreen.UpdateWinner(player);
             levelChangeScreen.Visible = true;
             levelChangeScreen.Enabled = true;
@@ -481,7 +481,7 @@ namespace Trash
                 if (player.gameState == GameState.Started)
                     player.inputHelper.allowMultipleEnterPresses = true;
 
-            Sound.Play(SoundEntry.StartGame);
+            Sound.Play(SoundEffectType.StartGame);
             mainGameScreen.NewGame();
         }
 

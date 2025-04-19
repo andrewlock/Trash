@@ -24,7 +24,7 @@ namespace Trash
         /// <param name="backgroundImage">The background image to display 
         /// Note that null is passed to the parent so this is not displayed</param>
         /// <param name="backgroundMusic">The background music to play</param>
-        public EnterHighScoreScreen(Game game, string backgroundImage, SoundEntry backgroundMusic)
+        public EnterHighScoreScreen(Game game, string backgroundImage, MusicType backgroundMusic)
             : base(game, backgroundMusic)
         {
             this.backgroundImage = backgroundImage;
@@ -215,73 +215,73 @@ namespace Trash
                 case CursorLocation.OnLetter1:
                     if (helper.IsUpPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 0, 1);
                     }
                     else if (helper.IsDownPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 0, -1);
                     }
                     else if (helper.IsRightPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLetter2;
                     }
                     break;
                 case CursorLocation.OnLetter2:
                     if (helper.IsUpPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 1, 1);
                     }
                     else if (helper.IsDownPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 1, -1);
                     }
                     else if (helper.IsRightPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLetter3;
                     }
                     else if (helper.IsLeftPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLetter1;
                     }
                     break;
                 case CursorLocation.OnLetter3:
                     if (helper.IsUpPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 2, 1);
                     }
                     else if (helper.IsDownPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         ChangeLetter(player, 2, -1);
                     }
                     else if (helper.IsRightPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLettersOk;
                     }
                     else if (helper.IsLeftPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLetter2;
                     }
                     break;
                 case CursorLocation.OnLettersOk:
                     if (helper.IsEnterPressed())
                     {
-                        Sound.Play(SoundEntry.StartGame);
+                        Sound.Play(SoundEffectType.StartGame);
                         EnterNameComplete(player);
                     }
                     else if (helper.IsLeftPressed())
                     {
-                        Sound.Play(SoundEntry.Navigate);
+                        Sound.Play(SoundEffectType.Navigate);
                         board.cursorLocation = CursorLocation.OnLetter3;
                     }
                     break;
